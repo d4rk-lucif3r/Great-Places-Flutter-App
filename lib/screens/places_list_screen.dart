@@ -17,34 +17,41 @@ class PlacesListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<GreatPlaces>(
-          child: Center(
-            child: const Text(
-              'Got no Places yet start adding some!',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          builder: (ctx, placesData, ch) => placesData.items.length <= 0
-              ? ch
-              : ListView.builder(
-                  itemCount: placesData.items.length,
-                  itemBuilder: (ctx, index) => Container(
-                        margin: EdgeInsets.all(8),
-                        child: ClipRRect(
-                          
-                          borderRadius: BorderRadius.circular(10),
-                          child: ListTile(
-                            
-                            tileColor: Colors.white,
-                            leading: CircleAvatar(
-                              backgroundImage:
-                                  FileImage(placesData.items[index].image),
-                            ),
-                            title: Text(placesData.items[index].title),
-                            onTap: () {},
-                          ),
-                        ),
-                      ))),
+      body: FutureBuilder(
+        future: Provider.of<GreatPlaces>(context, listen: false)
+            .fetchAndSetPlaces(),
+        builder: (ctx, dataSnapShot) => dataSnapShot.connectionState ==
+                ConnectionState.waiting
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Consumer<GreatPlaces>(
+                child: Center(
+                  child: const Text(
+                    'Got no Places yet start adding some!',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                builder: (ctx, placesData, ch) => placesData.items.length <= 0
+                    ? ch
+                    : ListView.builder(
+                        itemCount: placesData.items.length,
+                        itemBuilder: (ctx, index) => Container(
+                              margin: EdgeInsets.all(8),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: ListTile(
+                                  tileColor: Colors.white,
+                                  leading: CircleAvatar(
+                                    backgroundImage: FileImage(
+                                        placesData.items[index].image),
+                                  ),
+                                  title: Text(placesData.items[index].title),
+                                  onTap: () {},
+                                ),
+                              ),
+                            ))),
+      ),
     );
   }
 }
