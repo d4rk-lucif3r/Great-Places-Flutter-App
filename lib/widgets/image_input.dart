@@ -38,12 +38,13 @@ class _ImageInputState extends State<ImageInput> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Container(
           width: 150,
           height: 100,
           decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.grey),
+            border: Border.all(width: 2, color: Colors.amberAccent),
           ),
           child: _storeImage != null
               ? Image.file(
@@ -63,6 +64,7 @@ class _ImageInputState extends State<ImageInput> {
         ),
         Expanded(
             child: FlatButton.icon(
+          focusColor: Colors.amberAccent,
           onPressed: _takePicture,
           icon: Icon(Icons.camera),
           label: Text('Take Image'),
